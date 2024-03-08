@@ -1,4 +1,4 @@
-# Payload Plugin Template
+# Payload Plugin Import / Export
 
 A template repo to create a [Payload CMS](https://payloadcms.com) plugin.
 
@@ -16,6 +16,12 @@ Here is a short recap on how to integrate plugins with Payload, to learn more vi
 ### How to install a plugin
 
 To install any plugin, simply add it to your payload.config() in the Plugin array.
+
+```js
+npm i
+
+```
+
 
 ```ts
 import samplePlugin from 'sample-plugin';

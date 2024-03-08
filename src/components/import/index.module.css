@@ -1,0 +1,48 @@
+.select {
+width: clamp(150px,80vw,400px);
+}
+
+.fullwidth{
+  width: 100%
+}
+.textCenter{
+  text-align: center;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:1rem;
+  margin: 1rem;
+}
+
+.section {
+  margin:var(--base) 0;
+}
+
+.xScroll {
+  overflow-x: scroll;
+}
+
+.btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.btn:hover{
+  background-color: var(--theme-error-150);
+}
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.importBtn {
+  margin: 1rem;
+  width: 100%;
+}
