@@ -1,21 +1,20 @@
-import { Endpoint } from "payload/config";
-import { PayloadRequest } from "payload/types";
+import type { Endpoint } from "payload/config";
+import type { PayloadRequest } from "payload/types";
 
 export const importEndpointConfig: Endpoint = {
   method: "patch",
   path: "/import",
-  handler: async function (req: PayloadRequest, res) {
+  async handler(req: PayloadRequest, res) {
     const slug = req.collection?.config?.slug;
     const data = req.body;
     const { payload, user } = req;
     const locale = req.query?.locale;
 
     const results = await Promise.allSettled(
-      data.map(async (item: any) => {
-        // try {
-        const res = await payload
+      data?.map(async (item: Record<string, any>) => {
+        const data = await payload
           .update({
-            collection: slug as any,
+            collection: slug,
             id: item.id,
             data: item,
             overrideAccess: false,
@@ -23,13 +22,11 @@ export const importEndpointConfig: Endpoint = {
             ...(locale && { locale }),
           })
           .catch((err: any) => {
-            err.data = item.id;
-            throw err;
+            const data = [...err, { data: item.id }];
+            throw data;
           });
 
-        return res;
-
-        // 	}
+        return data;
       }),
     );
 

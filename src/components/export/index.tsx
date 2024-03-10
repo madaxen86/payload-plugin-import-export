@@ -8,10 +8,9 @@ export function ExportButtonList({ onClick, open }: Props) {
   return (
     <>
       <button
-        className={
-          "pill pill--style-light list-controls__toggle-columns  pill--has-action pill--has-icon pill--align-icon-right" +
-          (open ? " list-controls__buttons-active " : "")
-        }
+        className={`pill pill--style-light list-controls__toggle-columns  pill--has-action pill--has-icon pill--align-icon-right${
+          open ? " list-controls__buttons-active " : ""
+        }`}
         onClick={onClick}
       >
         <span className="pill__label">Export</span>

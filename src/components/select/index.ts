@@ -1,4 +1,5 @@
-import { StylesConfig } from "react-select";
+import type { StylesConfig } from "react-select";
+
 export const reactSelectStyle: StylesConfig = {
   container: styles => ({ ...styles, width: "100%" }),
   valueContainer: styles => ({

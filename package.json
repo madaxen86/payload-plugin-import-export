@@ -1,9 +1,9 @@
 {
-  "name": "@madaxen-labs/payload-plugin-import-export",
+  "name": "payload-plugin-import-export",
   "version": "0.0.1",
   "homepage:": "https://payloadcms.com",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
-  "description": "Payload CMS plugin to import data from csv and json files",
+  "description": "Payload CMS plugin to export and import data from csv and json files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -33,8 +33,10 @@
     "@types/css-modules": "^1.0.5",
     "@types/jest": "^29.5.11",
     "@types/papaparse": "^5.3.14",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "5.12.1",
     "@typescript-eslint/parser": "5.12.1",
+    "babel-loader": "^9.1.3",
     "css-loader": "^6.10.0",
     "dotenv": "^8.2.0",
     "eslint": "^8.19.0",
@@ -49,7 +51,7 @@
     "react": "^18.0.0",
     "typescript": "^4.8.4",
     "typescript-plugin-css-modules": "^5.1.0",
-    "webpack": "^5.90.3",
-    "flat": "^6.0.1"
-  }
+    "webpack": "^5.90.3"
+  },
+  "dependencies": {}
 }

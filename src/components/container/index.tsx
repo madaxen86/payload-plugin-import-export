@@ -5,16 +5,18 @@ import ExportExpand from "../export/ExportExpand";
 import ImportList from "../import";
 import styles from "./index.module.css";
 
-export function Container(props: ListProps) {
+export type Ctx = ListProps;
+
+export function Container(ctx: Ctx) {
   const [openExport, setOpenExport] = useState(false);
 
   return (
     <>
       <div className={styles.container}>
         <ExportButtonList onClick={() => setOpenExport(prev => !prev)} open={openExport} />
-        <ImportList collection={props.collection} />
+        <ImportList {...ctx} />
       </div>
-      <ExportExpand open={openExport} collection={props.collection} />
+      <ExportExpand open={openExport} collection={ctx.collection} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 // copied from https://github.com/payloadcms/payload/blob/main/packages/payload/src/utilities/flattenTopLevelFields.ts
 import type { Field, FieldAffectingData, FieldPresentationalOnly } from "payload/types";
 
@@ -19,7 +19,7 @@ import {
 export const flattenFields = (
   fields: Field[],
   keepPresentationalFields?: boolean,
-): (FieldAffectingData | FieldPresentationalOnly)[] => {
+): Array<FieldAffectingData | FieldPresentationalOnly> => {
   return fields.reduce((fieldsToUse, field) => {
     if (fieldAffectsData(field) || (keepPresentationalFields && fieldIsPresentationalOnly(field))) {
       return [...fieldsToUse, field];

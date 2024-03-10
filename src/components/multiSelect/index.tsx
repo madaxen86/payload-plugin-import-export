@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import ReactSelect from "react-select";
-import { ActionMeta, Options } from "react-select";
+import ReactSelect, { ActionMeta, Options } from "react-select";
 
 import makeAnimated from "react-select/animated";
 import { reactSelectStyle } from "../select";
@@ -40,7 +39,7 @@ export const MultiSelect = React.forwardRef<any, Props>(
     const valueRef = useRef(selected);
     valueRef.current = selected;
 
-    const isSelectAllSelected = () => valueRef.current.length === options.length; //&& options.length > 1;
+    const isSelectAllSelected = () => valueRef.current.length === options.length; // && options.length > 1;
     const isOptionSelected = (option: Option, selectValue: Options<Option>) =>
       valueRef.current.some(({ value }) => value === option.value) || isSelectAllSelected();
 
@@ -77,7 +76,7 @@ export const MultiSelect = React.forwardRef<any, Props>(
         ref={ref}
         {...rest}
         animate={animate}
-        //@ts-ignore
+        // @ts-ignore
         isOptionSelected={isOptionSelected}
         closeMenuOnSelect={false}
         // defaultValue={selectAllOption} // Should default to select all option

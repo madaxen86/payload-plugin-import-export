@@ -4,10 +4,12 @@ import Users from "./collections/Users";
 import Examples from "./collections/Examples";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { webpackBundler } from "@payloadcms/bundler-webpack";
+import { viteBundler } from "@payloadcms/bundler-vite";
 import { slateEditor } from "@payloadcms/richtext-slate";
-import { exportCollectionsPlugin } from "@newesissrl/payload-exportcollections-plugin";
+
 //@ts-ignore - ... is not under 'rootDir'
 import { importPlugin } from "../../src/index";
+
 import { Configuration } from "webpack";
 
 export default buildConfig({
@@ -22,7 +24,6 @@ export default buildConfig({
           ...config.resolve,
           fallback: {
             ...config?.resolve?.fallback,
-            fs: false,
           },
           alias: {
             ...(config?.resolve?.alias || {}),
@@ -44,7 +45,7 @@ export default buildConfig({
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
   //@ts-ignore
-  plugins: [exportCollectionsPlugin(), importPlugin({ enabled: true })],
+  plugins: [importPlugin({ enabled: true })],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),

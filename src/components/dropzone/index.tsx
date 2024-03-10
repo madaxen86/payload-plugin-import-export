@@ -123,7 +123,7 @@ export const Dropzone: React.FC<Props> = ({ onChange, className, mimeTypes, file
 
       <p className={`${baseClass}__label`}>
         {/* {t("general:or")} {t("dragAndDrop")} */}
-        {fileName ? fileName : "or drop file here"}
+        {fileName || "or drop file here"}
       </p>
     </div>
   );

@@ -19,24 +19,21 @@ export const extendWebpackConfig =
         alias: {
           ...(existingWebpackConfig.resolve?.alias ? existingWebpackConfig.resolve.alias : {}),
           // Add additional aliases here like so:
-          // [path.resolve(__dirname, './yourFileHere')]: mockModulePath,
         },
       },
       module: {
         ...(existingWebpackConfig.module || {}),
-        rules: (existingWebpackConfig.module?.rules || []).concat({
-          test: /\.css$/,
-          // use: [
-          //   {
-          loader: "css-loader",
-          options: {
-            modules: true,
-            importLoaders: 1,
-            localIdentName: "[sha1:hash:hex:4]",
-          },
-          // },
-          // ],
-        }),
+        // rules: (existingWebpackConfig.module?.rules || []).concat({
+        //   test: /\.css$/i,
+        //   loader: "css-loader",
+        //   options: {
+        //     modules: true,
+        //     // importLoaders: 1,
+        //     // localIdentName: "[sha1:hash:hex:4]",
+        //   },
+
+        // }
+        // ),
       },
     };
     return newWebpack;

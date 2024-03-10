@@ -2,19 +2,20 @@ import { Button } from "payload/components/elements";
 import React, { useMemo, useRef, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import ReactSelect from "react-select";
-import { ToastContainer } from "react-toastify";
-import { reactSelectStyle } from "../select";
+import { ToastContainer, toast } from "react-toastify";
 
 import Papa from "papaparse";
+
 import { useConfig, useLocale } from "payload/components/utilities";
 import type { Props as ListProps } from "payload/components/views/list";
 import { PaginatedDocs } from "payload/dist/database/types";
-import { toast } from "react-toastify";
+import { reactSelectStyle } from "../select";
 import flattenFields from "../../utils/flattenFields";
 import Link from "../link";
-import { MultiSelect, selectAllOption } from "../multiSelect";
+import { MultiSelect } from "../multiSelect";
 import styles from "./export.module.css";
-import { flatten } from "flat";
+import { flatten } from "../../utils/flat";
+
 type Props = {
   open: boolean;
   collection: ListProps["collection"];
@@ -24,22 +25,18 @@ const options = [
   { label: "CSV", value: "csv" },
 ];
 type Option = (typeof options)[number];
-// const optionsItems = [
-//   { label: "filtered Result", value: "filtered" },
-//   { label: "All", value: "all" },
-// ];
 
-function ExportExpand({ open, collection }: Props) {
+export function ExportExpand({ open, collection }: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [format, setFormat] = useState(options[0]);
-  const fields = useMemo(
-    () =>
-      flattenFields(collection.fields).map(f => ({
-        label: (f.label || f.name) + "",
-        value: f.name + "",
-      })),
-    [collection],
-  );
+  const fields = useMemo(() => {
+    const flattenedFields = flattenFields(collection.fields).map(f => ({
+      label: `${typeof f.label === "string" ? f.label : f.name}`,
+      value: `${f.name}`,
+    }));
+    console.log(flattenedFields, flatten(collection.fields));
+    return flattenedFields;
+  }, [collection]);
   const [selectedFields, setSelectedFields] = useState<Option[]>(fields);
 
   const config = useConfig();
@@ -58,7 +55,7 @@ function ExportExpand({ open, collection }: Props) {
       return toast.error("Please select fields to export");
     }
     const search = new URLSearchParams(window?.location.toString());
-    search.set("limit", "0"); //removes the limit
+    search.set("limit", "0"); // removes the limit
     locale.code && search.set("locale", locale.code);
     try {
       const data = (await fetch(`${serverURL}${api}/${collection.slug}?${search.toString()}`, {
@@ -73,7 +70,7 @@ function ExportExpand({ open, collection }: Props) {
       let href = "";
       let download = "";
       const date = new Date().toISOString().replace(":", "");
-      const lang = locale.code ? "_" + locale.code : "";
+      const lang = locale.code ? `_${locale.code}` : "";
 
       const docs = data.docs;
       const filteredData =
@@ -90,6 +87,8 @@ function ExportExpand({ open, collection }: Props) {
 
       if (format.value === "csv") {
         const flattenedData = filteredData.map(doc => flatten(doc));
+        console.log(flattenedData);
+
         const csv = Papa.unparse(flattenedData);
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
         href = URL.createObjectURL(blob);
@@ -97,7 +96,7 @@ function ExportExpand({ open, collection }: Props) {
       }
 
       if (format.value === "json") {
-        href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(filteredData));
+        href = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(filteredData))}`;
         download = `Export_${collection.slug}${lang}_${date}.json`;
       }
 
@@ -111,7 +110,7 @@ function ExportExpand({ open, collection }: Props) {
 
   return (
     <>
-      <AnimateHeight height={!!open ? "auto" : 0}>
+      <AnimateHeight height={open ? "auto" : 0}>
         <div className="card">
           <h5 className="title">Export</h5>
 
