@@ -26,7 +26,7 @@ export const config = buildConfig({
   serverUrl:process.env.PAYLOAD_PUBLIC_SERVER_URL //Required!
   plugins: [
     importExportPlugin({
-		  enabled: true,
+      enabled: true,
     }),
   ]
 });
