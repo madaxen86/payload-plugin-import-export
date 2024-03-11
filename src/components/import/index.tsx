@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 import type { Ctx } from "../container";
 import RouterLink from "../link/RouterLink";
+import { AdminViewComponent } from "payload/config";
 
 export function ImportList(ctx: Ctx) {
   const slug = useDrawerSlug(`import${ctx.collection.slug}`);

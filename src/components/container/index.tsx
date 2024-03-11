@@ -1,15 +1,15 @@
-import type { Props as ListProps } from "payload/components/views/list";
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { ExportButtonList } from "../export";
 import ExportExpand from "../export/ExportExpand";
 import RouterLink from "../link/RouterLink";
 
-export type Ctx = ListProps;
+export type Ctx = any;
 
 export function Container(ctx: Ctx) {
   const [openExport, setOpenExport] = useState(false);
   const styles = useStyles();
+
   return (
     <>
       <div className={styles.container}>

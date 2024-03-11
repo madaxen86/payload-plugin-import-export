@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Papa from "papaparse";
 
 import { useConfig, useLocale } from "payload/components/utilities";
-import type { Props as ListProps } from "payload/components/views/list";
+
 import { PaginatedDocs } from "payload/dist/database/types";
 import flattenFields from "../../utils/flattenFields";
 import Link from "../link";
@@ -17,10 +17,11 @@ import { reactSelectStyle } from "../select";
 import { createUseStyles } from "react-jss";
 import { flatten } from "../../utils/flat";
 import { getCSVColumnNamesAndFlattendedData } from "../../utils/csv";
+import { SanitizedCollectionConfig } from "payload/types";
 
 type Props = {
   open: boolean;
-  collection: ListProps["collection"];
+  collection: SanitizedCollectionConfig;
 };
 const options = [
   { label: "JSON", value: "json" },

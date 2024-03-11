@@ -1,11 +1,11 @@
 import { DefaultTemplate } from "payload/components/templates";
-import React from "react";
-import { ImportForm } from "../components/import/ImportForm";
-import { ToastContainer } from "react-toastify";
-import { Meta, useConfig, useDocumentInfo } from "payload/components/utilities";
-import { getTranslation } from "payload/utilities";
+import { Meta } from "payload/components/utilities";
 import { AdminViewProps } from "payload/config";
+import { getTranslation } from "payload/utilities";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { ToastContainer } from "react-toastify";
+import { ImportForm } from "../components/import/ImportForm";
 
 function ViewWrapper(props: AdminViewProps) {
   const { i18n } = useTranslation("general");
