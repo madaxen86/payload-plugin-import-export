@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
   "description": "Payload CMS plugin to export and import data from csv and json files",
@@ -26,7 +26,8 @@
   "author": "madaxen86",
   "license": "MIT",
   "peerDependencies": {
-    "payload": "^2.11.2"
+    "payload": "^2.11.2",
+    "react": "^18.0.0"
   },
   "devDependencies": {
     "@payloadcms/eslint-config": "^0.0.1",
@@ -46,12 +47,14 @@
     "jest": "^29.7.0",
     "payload": "^2.11.2",
     "prettier": "^2.7.1",
-    "react": "^18.0.0",
     "typescript": "^4.8.4",
     "webpack": "^5.90.3"
   },
   "dependencies": {
     "papaparse": "^5.4.1",
     "react-jss": "^10.10.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
