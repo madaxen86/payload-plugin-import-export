@@ -5,45 +5,39 @@ import { useConfig, useLocale } from "payload/components/utilities";
 import { Locale } from "payload/config";
 
 import { Dropzone } from "../dropzone";
-import Link from "../link";
+
 import { MultiSelect } from "../multiSelect";
 import { reactSelectStyle } from "../select";
 import { splitResults } from "./utils";
-
-import styles from "./index.module.css";
 
 import { toast } from "react-toastify";
 import { unflatten } from "../../utils/flat";
 
 import type { Ctx } from "../container";
+import { createUseStyles } from "react-jss";
+import { useHistory, useLocation } from "react-router-dom";
+import Link from "../link";
+import RouterLink from "../link/RouterLink";
 
 type Data = Array<Record<string, any>>;
 
-export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams">) => {
-  const linkRef = useRef<HTMLAnchorElement>(null);
+export const ImportForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [data, setData] = useState<Data>([]);
   const [fields, setFields] = useState([""]);
   const [selectedFields, _setSelectedFields] = useState([{ label: "id", value: "id" }]);
-  const setSelectedFields: React.Dispatch<
-    React.SetStateAction<
-      {
-        label: string;
-        value: string;
-      }[]
-    >
-  > = newVal => {
+  const setSelectedFields: typeof _setSelectedFields = (newVal) => {
     if (newVal === null || newVal.length === 0)
       return _setSelectedFields([{ label: "id", value: "id" }]);
-
     _setSelectedFields(newVal);
   };
 
-  const { slug } = collection;
+  const styles = useStyles();
   const config = useConfig();
+  const paths = window.location.pathname.split("/");
+  const slug = paths[3];
   const locale = useLocale();
-  const location = window?.location;
-  const params = new URLSearchParams();
+  const history = useHistory();
 
   useEffect(() => {
     if (file) {
@@ -79,16 +73,16 @@ export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams
 
       Papa.parse<Data>(file, {
         header: true,
-        complete: result => {
+        complete: (result) => {
           const data = result?.data || [];
-          const unflattenedData = data.map(doc => unflatten(doc));
+          const unflattenedData = data.map((doc) => unflatten(doc));
           setData(unflattenedData);
           setFields(Object.keys(unflattenedData[0] || {}));
         },
       });
     } else if (file.type === "application/json") {
       // Fetching JSON data
-      const response = await fetch(URL.createObjectURL(file)).then(res => res.json());
+      const response = await fetch(URL.createObjectURL(file)).then((res) => res.json());
 
       setData(response);
       setFields(Object.keys(response[0] || {}));
@@ -100,11 +94,11 @@ export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams
   const handleImport = async () => {
     if (!data) return;
 
-    const selectedData = data.map(row => {
+    const selectedData = data.map((row) => {
       const selectedRow: Record<string, any> = selectedFields.includes({ label: "id", value: "id" })
         ? {}
         : { id: row.id };
-      selectedFields.forEach(field => {
+      selectedFields.forEach((field) => {
         selectedRow[field.value] = row[field.value];
       });
       return selectedRow;
@@ -117,22 +111,21 @@ export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams
           "Content-type": "application/json",
         },
         credentials: "include",
-      }).then(res => res.json())) as PromiseSettledResult<{ id: string | number }>[];
+      }).then((res) => res.json())) as PromiseSettledResult<{ id: string | number }>[];
 
       displayResults(res, slug, locale);
-      history?.go(0);
+      // history?.go(0);
+      const search = new URLSearchParams();
+      search.set("imported", new Date().toISOString());
+      history.push({ search: search.toString() });
     } catch (err) {}
   };
 
   return (
     <>
       <div className={styles.flex}>
-        <Dropzone
-          mimeTypes={[".csv", ".json"]}
-          onChange={handleFileChange}
-          className={styles.dropzoneImport}
-          fileName={file?.name}
-        />
+        <h1>Import to {slug.charAt(0).toUpperCase() + slug.slice(1)}</h1>
+        <Dropzone mimeTypes={[".csv", ".json"]} onChange={handleFileChange} fileName={file?.name} />
 
         <section className={[styles.section, styles.fullwidth].join(" ")}>
           <h4 className={styles.textCenter}>Select Fields</h4>
@@ -142,8 +135,8 @@ export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams
             setSelected={setSelectedFields}
             isDisabled={fields.length <= 1}
             closeMenuOnSelect={false}
-            options={fields.map(field => ({ value: field, label: field }))}
-            value={selectedFields.map(field => ({ value: field, label: field }))}
+            options={fields.map((field) => ({ value: field, label: field }))}
+            value={selectedFields.map((field) => ({ value: field, label: field }))}
             menuPlacement="top"
             className={fields.length <= 1 ? styles.disabled : ""}
             styles={reactSelectStyle}
@@ -179,13 +172,24 @@ export const ImportForm = ({ collection }: Pick<Ctx, "collection" | "resetParams
             </div>
           </Collapsible>
         </section>
-        <Button
-          onClick={handleImport}
-          disabled={selectedFields.length <= 1}
-          className={styles.importBtn}
-        >
-          Import
-        </Button>
+        <div className={styles.btnGroup}>
+          <RouterLink
+            to={`${paths.slice(0, paths.length - 1).join("/")}`}
+            className={
+              " btn btn--style-primary btn--icon-style-without-border btn--size-medium btn--icon-position-right"
+            }
+          >
+            Cancel
+          </RouterLink>
+
+          <Button
+            onClick={handleImport}
+            disabled={selectedFields.length <= 1}
+            className={styles.importBtn}
+          >
+            Import
+          </Button>
+        </div>
       </div>
     </>
   );
@@ -202,7 +206,7 @@ function displayResults(
 
   if (errors.length > 0) {
     const csv = Papa.unparse(
-      errors.map(err => ({
+      errors.map((err) => ({
         data: err.reason.data,
         status: err.status,
         reason: err.reason.name,
@@ -229,3 +233,50 @@ function displayResults(
     );
   }
 }
+
+const useStyles = createUseStyles({
+  select: {
+    width: "clamp(150px, 80vw, 400px)",
+  },
+  fullwidth: {
+    width: "100%",
+  },
+  textCenter: {
+    textAlign: "center",
+  },
+  flex: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "1rem",
+    margin: "1rem",
+  },
+  section: {
+    margin: "var(--base) 0",
+  },
+  xScroll: {
+    overflowX: "scroll",
+  },
+  btn: {
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+  },
+  icon: {
+    width: "1.5rem",
+    height: "1.5rem",
+  },
+  disabled: {
+    opacity: 0.5,
+    cursor: "not-allowed",
+  },
+  btnGroup: {
+    display: "flex",
+    gap: "1rem",
+    width: "100%",
+  },
+  importBtn: {
+    flexGrow: "1",
+  },
+});

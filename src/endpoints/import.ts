@@ -29,7 +29,6 @@ export const importEndpointConfig: Endpoint = {
         return data;
       }),
     );
-
     res.json(results);
   },
 };

@@ -2,7 +2,7 @@ import { Button } from "payload/components/elements";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import styles from "./index.module.css";
+import { createUseStyles } from "react-jss";
 
 const handleDragOver = (e: DragEvent) => {
   e.preventDefault();
@@ -24,6 +24,8 @@ export const Dropzone: React.FC<Props> = ({ onChange, className, mimeTypes, file
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { t } = useTranslation(["upload", "general"]);
+
+  const styles = useStyles();
 
   const handlePaste = React.useCallback(
     (e: ClipboardEvent) => {
@@ -128,3 +130,10 @@ export const Dropzone: React.FC<Props> = ({ onChange, className, mimeTypes, file
     </div>
   );
 };
+
+const useStyles = createUseStyles({
+  dropzoneImport: {
+    height: "clamp(100px,100vh,200px)",
+    margin: "auto",
+  },
+});

@@ -9,12 +9,14 @@ import Papa from "papaparse";
 import { useConfig, useLocale } from "payload/components/utilities";
 import type { Props as ListProps } from "payload/components/views/list";
 import { PaginatedDocs } from "payload/dist/database/types";
-import { reactSelectStyle } from "../select";
 import flattenFields from "../../utils/flattenFields";
 import Link from "../link";
 import { MultiSelect } from "../multiSelect";
-import styles from "./export.module.css";
+import { reactSelectStyle } from "../select";
+
+import { createUseStyles } from "react-jss";
 import { flatten } from "../../utils/flat";
+import { getCSVColumnNamesAndFlattendedData } from "../../utils/csv";
 
 type Props = {
   open: boolean;
@@ -29,15 +31,10 @@ type Option = (typeof options)[number];
 export function ExportExpand({ open, collection }: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [format, setFormat] = useState(options[0]);
-  const fields = useMemo(() => {
-    const flattenedFields = flattenFields(collection.fields).map(f => ({
-      label: `${typeof f.label === "string" ? f.label : f.name}`,
-      value: `${f.name}`,
-    }));
-    console.log(flattenedFields, flatten(collection.fields));
-    return flattenedFields;
-  }, [collection]);
+  const fields = useMemo(createFlattenedFields(collection), [collection]);
   const [selectedFields, setSelectedFields] = useState<Option[]>(fields);
+
+  const styles = useStyles();
 
   const config = useConfig();
   const locale = useLocale();
@@ -65,7 +62,7 @@ export function ExportExpand({ open, collection }: Props) {
           "Content-type": "application/json",
         },
         credentials: "include",
-      }).then(res => res.json())) as PaginatedDocs<Record<string, any>>;
+      }).then((res) => res.json())) as PaginatedDocs<Record<string, any>>;
 
       let href = "";
       let download = "";
@@ -73,29 +70,33 @@ export function ExportExpand({ open, collection }: Props) {
       const lang = locale.code ? `_${locale.code}` : "";
 
       const docs = data.docs;
-      const filteredData =
-        selectedFields.length === fields.length
-          ? docs
-          : docs.map(doc =>
-              selectedFields
-                .map(o => o.value)
-                .reduce(function (o: any, k: string) {
-                  o[k] = doc[k];
-                  return o;
-                }, {}),
-            );
 
       if (format.value === "csv") {
-        const flattenedData = filteredData.map(doc => flatten(doc));
-        console.log(flattenedData);
+        // const flattenedData = filteredData.map((doc) => flatten(doc));
 
-        const csv = Papa.unparse(flattenedData);
+        const [columns, flattenedData] = getCSVColumnNamesAndFlattendedData(
+          docs,
+          selectedFields?.map((o) => o.value),
+        );
+
+        const csv = Papa.unparse(flattenedData, { columns });
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
         href = URL.createObjectURL(blob);
         download = `Export_${collection.slug}${lang}_${date}.csv`;
       }
 
       if (format.value === "json") {
+        const filteredData =
+          selectedFields.length === fields.length
+            ? docs
+            : docs.map((doc) =>
+                selectedFields
+                  .map((o) => o.value)
+                  .reduce(function (o: any, k: string) {
+                    o[k] = doc[k];
+                    return o;
+                  }, {}),
+              );
         href = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(filteredData))}`;
         download = `Export_${collection.slug}${lang}_${date}.json`;
       }
@@ -127,7 +128,7 @@ export function ExportExpand({ open, collection }: Props) {
                 name="format"
                 defaultValue={options[0]}
                 value={format}
-                onChange={val => setFormat(val as Option)}
+                onChange={(val) => setFormat(val as Option)}
               />
             </div>
             <div>
@@ -156,3 +157,30 @@ export function ExportExpand({ open, collection }: Props) {
 }
 
 export default ExportExpand;
+
+const useStyles = createUseStyles({
+  cardContent: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "var(--base)",
+    width: "100%",
+    flexWrap: "wrap",
+  },
+  hidden: {
+    visibility: "hidden",
+  },
+  exportButton: {
+    height: "4rem",
+    marginTop: "auto",
+    marginBottom: "6px",
+  },
+});
+function createFlattenedFields(
+  collection: Props["collection"],
+): () => { label: string; value: string }[] {
+  return () =>
+    flattenFields(collection.fields).map((f) => ({
+      label: `${typeof f.label === "string" ? f.label : f.name}`,
+      value: `${f.name}`,
+    }));
+}

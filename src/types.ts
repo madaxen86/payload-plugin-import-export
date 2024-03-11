@@ -5,6 +5,7 @@ export interface PluginTypes {
    */
   enabled?: boolean;
   excludeCollections?: string[];
+  redirectAfterImport?: boolean;
 }
 
 export interface NewCollectionTypes {

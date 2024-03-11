@@ -1,14 +1,17 @@
-import type { Config, Plugin } from "payload/config";
+import type { Plugin } from "payload/config";
 
 import ButtonList from "./components/container";
 import { importEndpointConfig } from "./endpoints/import";
 import type { PluginTypes } from "./types";
 import { extendWebpackConfig } from "./webpack";
+import { ImportForm } from "./components/import/ImportForm";
+import { importView } from "./view/importView";
+import ImportList from "./components/import";
 
-type PluginType = (pluginOptions: PluginTypes) => Plugin;
+type PluginType = (pluginOptions?: PluginTypes) => Plugin;
 
-export const importPlugin: PluginType = pluginOptions => {
-  return (incomingConfig: Config): Config => {
+export const importExportPlugin: PluginType = (pluginOptions) => {
+  return (incomingConfig) => {
     // =
     //   (pluginOptions: PluginTypes): Plugin =>
     //     (incomingConfig) => {
@@ -25,16 +28,20 @@ export const importPlugin: PluginType = pluginOptions => {
 
       // Add additional admin config here
 
-      // components: {
-      //   ...(config.admin?.components || {}),
-      //   // Add additional admin components here
-
-      // },
+      components: {
+        ...(config.admin?.components || {}),
+        // Add additional admin components here
+        views: {
+          ...(config.admin?.components?.views || {}),
+          // Add additional admin views here
+          Import: importView(config, pluginOptions),
+        },
+      },
     };
 
     // If the plugin is disabled, return the config without modifying it
     // The order of this check is important, we still want any webpack extensions to be applied even if the plugin is disabled
-    if (pluginOptions.enabled === false) {
+    if (pluginOptions?.enabled === false) {
       return config;
     }
     if (config.serverURL === undefined) {
@@ -45,10 +52,9 @@ export const importPlugin: PluginType = pluginOptions => {
       return config;
     }
     config.collections = [
-      ...(config.collections || []).map(collection => {
+      ...(config.collections || []).map((collection) => {
         // Add additional collections here
-
-        if (pluginOptions.excludeCollections?.includes(collection.slug)) {
+        if (pluginOptions?.excludeCollections?.includes(collection.slug)) {
           return collection;
         }
 
@@ -70,7 +76,7 @@ export const importPlugin: PluginType = pluginOptions => {
     ];
 
     config.endpoints = [
-      ...(config.endpoints || []).concat(importEndpointConfig),
+      ...(config.endpoints || []), //.concat(importEndpointConfig),
 
       // Add additional endpoints here
     ];
@@ -85,7 +91,7 @@ export const importPlugin: PluginType = pluginOptions => {
       // Add additional hooks here
     };
 
-    config.onInit = async payload => {
+    config.onInit = async (payload) => {
       if (incomingConfig.onInit) await incomingConfig.onInit(payload);
       // Add additional onInit code by using the onInitExtension function
       // onInitExtension(pluginOptions, payload)

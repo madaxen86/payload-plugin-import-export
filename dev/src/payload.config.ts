@@ -1,5 +1,5 @@
 import { buildConfig } from "payload/config";
-import path from "path";
+import { resolve, join } from "path";
 import Users from "./collections/Users";
 import Examples from "./collections/Examples";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
@@ -8,7 +8,7 @@ import { viteBundler } from "@payloadcms/bundler-vite";
 import { slateEditor } from "@payloadcms/richtext-slate";
 
 //@ts-ignore - ... is not under 'rootDir'
-import { importPlugin } from "../../src/index";
+import { importExportPlugin } from "../../src/index";
 
 import { Configuration } from "webpack";
 
@@ -17,7 +17,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     bundler: webpackBundler(),
-    webpack: config => {
+    webpack: (config) => {
       const newConfig = {
         ...config,
         resolve: {
@@ -27,9 +27,9 @@ export default buildConfig({
           },
           alias: {
             ...(config?.resolve?.alias || {}),
-            react: path.join(__dirname, "../node_modules/react"),
-            "react-dom": path.join(__dirname, "../node_modules/react-dom"),
-            payload: path.join(__dirname, "../node_modules/payload"),
+            react: join(__dirname, "../node_modules/react"),
+            "react-dom": join(__dirname, "../node_modules/react-dom"),
+            payload: join(__dirname, "../node_modules/payload"),
           },
         },
       };
@@ -39,13 +39,13 @@ export default buildConfig({
   editor: slateEditor({}),
   collections: [Examples, Users],
   typescript: {
-    outputFile: path.resolve(__dirname, "payload-types.ts"),
+    outputFile: resolve(__dirname, "payload-types.ts"),
   },
   graphQL: {
-    schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
+    schemaOutputFile: resolve(__dirname, "generated-schema.graphql"),
   },
   //@ts-ignore
-  plugins: [importPlugin({ enabled: true })],
+  plugins: [importExportPlugin({ enabled: true })],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
@@ -69,7 +69,7 @@ export default buildConfig({
 //   config.resolve.fallback["fs"] = false;
 //   config.resolve.alias = {
 //     ...config.resolve.alias,
-//     payload: path.resolve("./node_modules/payload"), // this will fix the components usage of `useConfig` hook
+//     payload:resolve("./node_modules/payload"), // this will fix the components usage of `useConfig` hook
 //   };
 //   return config;
 // },

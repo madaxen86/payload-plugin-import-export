@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
-
-import styles from "./index.module.css";
+import React from "react";
+import { createUseStyles } from "react-jss";
 
 const Link = React.forwardRef<HTMLAnchorElement, React.HTMLProps<HTMLAnchorElement>>(
   ({ children, className, ...rest }, ref) => {
+    const styles = useStyles();
     return (
       <a
         ref={ref}
@@ -21,3 +21,9 @@ const Link = React.forwardRef<HTMLAnchorElement, React.HTMLProps<HTMLAnchorEleme
 );
 
 export default Link;
+
+const useStyles = createUseStyles({
+  error: {
+    margin: " 0 0.5rem",
+  },
+});
