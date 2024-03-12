@@ -21,12 +21,17 @@ pnpm add "payload-plugin-import-export"
 
 ```ts
 import importExportPlugin  from 'payload-plugin-import-export';
+import type { User } from "payload/generated-types";
 
 export const config = buildConfig({
-  serverUrl:process.env.PAYLOAD_PUBLIC_SERVER_URL //Required!
+  serverUrl: process.env.PAYLOAD_PUBLIC_SERVER_URL //Required!
   plugins: [
     importExportPlugin({
       enabled: true,
+      excludeCollections: ["users"],
+      redirectAfterImport: true,
+      // import User type from your payload-types.ts
+      canImport: (user:User) => user.roles.includes("admin")
     }),
   ]
 });
@@ -34,11 +39,12 @@ export const config = buildConfig({
 
 <!-- add table for plugin props -->
 ## Config
-| PROP                | TYPE     | DEFAULT     | DESCRIPTION                                         |
-|---------------------|----------|-------------|-----------------------------------------------------|
-| enabled             | boolean  | true        | Enable/disable plugin                               |
-| excludeCollections  | string[] | undefined   | List of collection slugs to not display the buttons |
-| redirectAfterImport | boolean  | true        | Redirect back to collection after import            |
+| PROP                | TYPE                       | DEFAULT     | DESCRIPTION                                         |
+|---------------------|----------------------------|-------------|-----------------------------------------------------|
+| enabled             | boolean                    | true        | Enable/disable plugin                               |
+| excludeCollections  | string[]                   | undefined   | List of collection slugs to not display the buttons |
+| redirectAfterImport | boolean                    | true        | Redirect back to collection after import            |
+| canImport           | (user:unknown) => boolean  | () => true  | Restrict access to import. You have access to the user. |
 
 ## How to use
 

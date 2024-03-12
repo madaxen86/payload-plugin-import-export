@@ -23,6 +23,24 @@ export interface Example {
   id: string;
   title: string;
   content?: string | null;
+  access?: string | null;
+  array?:
+    | {
+        title?: string | null;
+        name?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  titlerow?: string | null;
+  namerow?: string | null;
+  tab1: {
+    titletab1?: string | null;
+    nametab1?: string | null;
+  };
+  tab2: {
+    titletab2?: string | null;
+    nametab2?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }

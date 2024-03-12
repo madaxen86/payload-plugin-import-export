@@ -97,6 +97,10 @@ export const importExportPlugin: PluginType = (pluginOptions) => {
       // onInitExtension(pluginOptions, payload)
     };
 
+    config.custom = {
+      ...config.custom,
+      importExportPluginConfig: pluginOptions,
+    };
     return config;
   };
 };

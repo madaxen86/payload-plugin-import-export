@@ -7,6 +7,7 @@ const Examples: CollectionConfig = {
   admin: {
     useAsTitle: "title",
   },
+
   fields: [
     {
       name: "title",

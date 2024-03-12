@@ -11,6 +11,7 @@ import { slateEditor } from "@payloadcms/richtext-slate";
 import { importExportPlugin } from "../../src/index";
 
 import { Configuration } from "webpack";
+import { User } from "payload/generated-types";
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
@@ -44,8 +45,14 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: resolve(__dirname, "generated-schema.graphql"),
   },
-  //@ts-ignore
-  plugins: [importExportPlugin({ enabled: true })],
+
+  plugins: [
+    importExportPlugin({
+      enabled: true,
+      canImport: (user: User) => user.roles.includes("admin"),
+      redirectAfterImport: true,
+    }),
+  ],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),

@@ -1,5 +1,5 @@
 import { CollectionConfig, FieldHookArgs } from "payload/types";
-import { isAdmin } from "../utils/roles";
+import { isAdmin, isSelfOrAdmin } from "../utils/roles";
 
 const Users: CollectionConfig = {
   slug: "users",
@@ -27,7 +27,7 @@ const Users: CollectionConfig = {
         beforeChange: [ensureFirstUserIsAdmin],
       },
       access: {
-        read: isAdmin,
+        read: isSelfOrAdmin,
         create: isAdmin,
         update: isAdmin,
       },

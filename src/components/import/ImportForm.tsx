@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
 import Papa from "papaparse";
-import { Collapsible, Button } from "payload/components/elements";
+import { Button, Collapsible } from "payload/components/elements";
 import { useConfig, useLocale } from "payload/components/utilities";
 import { Locale } from "payload/config";
+import React, { useEffect, useState } from "react";
 
 import { Dropzone } from "../dropzone";
 
@@ -13,11 +13,13 @@ import { splitResults } from "./utils";
 import { toast } from "react-toastify";
 import { unflatten } from "../../utils/flat";
 
-import type { Ctx } from "../container";
 import { createUseStyles } from "react-jss";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { PluginTypes } from "../../types";
+import { useSlug } from "../../utils/useSlug";
 import Link from "../link";
 import RouterLink from "../link/RouterLink";
+import { useRedirect } from "../../utils/useRedirect";
 
 type Data = Array<Record<string, any>>;
 
@@ -35,10 +37,11 @@ export const ImportForm = () => {
   const styles = useStyles();
   const config = useConfig();
   const paths = window.location.pathname.split("/");
-  const slug = paths[3];
+  const slug = useSlug();
+  const backToCollection = `${paths.slice(0, paths.length - 1).join("/")}`;
   const locale = useLocale();
   const history = useHistory();
-
+  const redirect = useRedirect();
   useEffect(() => {
     if (file) {
       parseInputFile();
@@ -51,7 +54,9 @@ export const ImportForm = () => {
   const {
     routes: { api },
     serverURL,
+    custom,
   } = config;
+  const importExportPluginConfig = custom.importExportPluginConfig as PluginTypes;
 
   const handleFileChange = async (list: FileList) => {
     setFile(list[0]);
@@ -114,11 +119,13 @@ export const ImportForm = () => {
       }).then((res) => res.json())) as PromiseSettledResult<{ id: string | number }>[];
 
       displayResults(res, slug, locale);
-      // history?.go(0);
-      const search = new URLSearchParams();
-      search.set("imported", new Date().toISOString());
-      history.push({ search: search.toString() });
-    } catch (err) {}
+      if (!!importExportPluginConfig.redirectAfterImport) {
+        redirect(backToCollection);
+      }
+    } catch (err) {
+      //no error should be thrown because we use Promise.allSettled on API
+      console.error(err);
+    }
   };
 
   return (
@@ -174,7 +181,7 @@ export const ImportForm = () => {
         </section>
         <div className={styles.btnGroup}>
           <RouterLink
-            to={`${paths.slice(0, paths.length - 1).join("/")}`}
+            to={backToCollection}
             className={
               " btn btn--style-primary btn--icon-style-without-border btn--size-medium btn--icon-position-right"
             }

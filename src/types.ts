@@ -1,3 +1,5 @@
+import { User } from "payload/dist/auth";
+
 export interface PluginTypes {
   /**
    * Enable or disable plugin
@@ -6,6 +8,7 @@ export interface PluginTypes {
   enabled?: boolean;
   excludeCollections?: string[];
   redirectAfterImport?: boolean;
+  canImport?: (user: unknown) => boolean;
 }
 
 export interface NewCollectionTypes {
