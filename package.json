@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
   "description": "Payload CMS plugin to export and import data from csv and json files",
@@ -21,7 +21,13 @@
     "lint": "eslint src",
     "lint:fix": "eslint --fix --ext .ts,.tsx src",
     "clean": "rimraf dist && rimraf dev/yarn.lock",
-    "prepublishOnly": "yarn clean && yarn build"
+    "prepublishOnly": "yarn clean && yarn build",
+    "dev": "yalc-watch"
+  },
+  "yalcWatch": {
+    "watchFolder": "dist",
+    "buildWatchCommand": "tsc --watch",
+    "extensions": "js,png,svg,gif,jpeg,css"
   },
   "author": "madaxen86",
   "license": "MIT",
@@ -48,7 +54,8 @@
     "payload": "^2.11.2",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4",
-    "webpack": "^5.90.3"
+    "webpack": "^5.90.3",
+    "yalc-watch-improved": "^1.0.3"
   },
   "dependencies": {
     "papaparse": "^5.4.1",
