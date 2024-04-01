@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
   "description": "Payload CMS plugin to export and import data from csv and json files",
@@ -27,7 +27,7 @@
   "yalcWatch": {
     "watchFolder": "dist",
     "buildWatchCommand": "tsc --watch",
-    "extensions": "js,png,svg,gif,jpeg,css"
+    "extensions": "js,png,svg,gif,jpeg,css,ts,tsx"
   },
   "author": "madaxen86",
   "license": "MIT",
