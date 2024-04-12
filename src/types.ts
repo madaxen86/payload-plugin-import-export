@@ -6,7 +6,8 @@ export interface PluginTypes {
    * @default false
    */
   enabled?: boolean;
-  excludeCollections?: string[];
+  collections?: string[],
+  // excludeCollections?: string[];
   redirectAfterImport?: boolean;
   canImport?: (user: unknown) => boolean;
 }

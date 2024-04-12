@@ -7,14 +7,14 @@ export const importView: (config: Config, pluginOptions?: PluginTypes) => AdminV
   config,
   pluginOptions,
 ) => {
-  if (!pluginOptions || !pluginOptions?.excludeCollections)
+  if (!pluginOptions || !pluginOptions?.collections)
     return { Component: ViewWrapper, path: "/collections/:slug/import" };
 
   return {
     Component: ViewWrapper,
     path: config
       .collections!.filter(
-        (collection) => !pluginOptions.excludeCollections?.includes(collection.slug),
+        (collection) => pluginOptions.collections?.includes(collection.slug),
       )
       .map((collection) => `/collections/:${collection.slug}/import`),
   };

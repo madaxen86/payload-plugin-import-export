@@ -28,7 +28,7 @@ export const config = buildConfig({
   plugins: [
     importExportPlugin({
       enabled: true,
-      excludeCollections: ["users"],
+      collections: ["users"],
       redirectAfterImport: true,
       // import User type from your payload-types.ts
       canImport: (user:User) => user.roles.includes("admin")
@@ -42,7 +42,7 @@ export const config = buildConfig({
 | PROP                | TYPE                       | DEFAULT     | DESCRIPTION                                         |
 |---------------------|----------------------------|-------------|-----------------------------------------------------|
 | enabled             | boolean                    | true        | Enable/disable plugin                               |
-| excludeCollections  | string[]                   | undefined   | List of collection slugs to not display the buttons |
+| collections         | string[]                   | undefined   | List of collection slugs to display the buttons     |
 | redirectAfterImport | boolean                    | true        | Redirect back to collection after import            |
 | canImport           | (user:unknown) => boolean  | () => true  | Restrict access to import. You have access to the user. |
 
