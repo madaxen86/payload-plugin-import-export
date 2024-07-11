@@ -5,7 +5,7 @@ import { importEndpointConfig } from "./endpoints/import";
 import type { PluginTypes } from "./types";
 import { extendWebpackConfig } from "./webpack";
 import { ImportForm } from "./components/import/ImportForm";
-import { importView } from "./view/importView";
+import { importViews } from "./view/importView";
 import ImportList from "./components/import";
 
 type PluginType = (pluginOptions?: PluginTypes) => Plugin;
@@ -34,7 +34,7 @@ export const importExportPlugin: PluginType = (pluginOptions) => {
         views: {
           ...(config.admin?.components?.views || {}),
           // Add additional admin views here
-          Import: importView(config, pluginOptions),
+          ...importViews(config, pluginOptions),
         },
       },
     };

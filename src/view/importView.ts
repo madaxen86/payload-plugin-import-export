@@ -2,20 +2,30 @@ import { AdminView, Config } from "payload/config";
 import ViewWrapper from "./ViewWrapper";
 import { PluginTypes } from "../types";
 
-//@ts-ignore -- path should be string not string[] but it is accepted as in ReactRouterDocs
-export const importView: (config: Config, pluginOptions?: PluginTypes) => AdminView = (
+type adminViews = { [key: string]: AdminView };
+
+export const importViews: (config: Config, pluginOptions?: PluginTypes) => adminViews = (
   config,
   pluginOptions,
 ) => {
+  let importViews: adminViews = {};
   if (!pluginOptions || !pluginOptions?.excludeCollections)
-    return { Component: ViewWrapper, path: "/collections/:slug/import" };
+    return {
+      Import: {
+        Component: ViewWrapper,
+        path: "/collections/:slug/import",
+      },
+    };
+  config
+    .collections!.filter(
+      (collection) => !pluginOptions.excludeCollections?.includes(collection.slug),
+    )
+    .forEach((collection) => {
+      importViews[`Import${collection.slug}`] = {
+        Component: ViewWrapper,
+        path: `/collections/:${collection.slug}/import`,
+      };
+    });
 
-  return {
-    Component: ViewWrapper,
-    path: config
-      .collections!.filter(
-        (collection) => !pluginOptions.excludeCollections?.includes(collection.slug),
-      )
-      .map((collection) => `/collections/:${collection.slug}/import`),
-  };
+  return importViews;
 };
