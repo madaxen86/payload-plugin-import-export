@@ -1,5 +1,6 @@
 import type { Config } from 'payload'
-import type { PluginTypes } from 'src/types.js'
+
+import type { PluginTypes } from './types.js'
 
 import { importEndpointConfig } from './endpoints/import.js'
 
@@ -33,12 +34,12 @@ export const plugin =
       if (!collection.endpoints) {
         collection.endpoints = []
       }
+
       collection.endpoints.push({
         handler: importEndpointConfig,
         method: 'get',
         path: '/import',
       })
-
       collection.endpoints.push({
         handler: importEndpointConfig,
         method: 'patch',
