@@ -10,7 +10,7 @@ export const testEmailAdapter: EmailAdapter<void> = ({ payload }) => ({
   sendEmail: async (message) => {
     const stringifiedTo = getStringifiedToAddress(message)
     const res = `Test email to: '${stringifiedTo}', Subject: '${message.subject}'`
-    payload.logger.info({ content: message, msg: res })
+
     return Promise.resolve()
   },
 })
