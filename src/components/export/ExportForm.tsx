@@ -1,13 +1,13 @@
 'use client'
 
-import type { ClientCollectionConfig, Field, PaginatedDocs } from 'payload'
+import type { ClientCollectionConfig, PaginatedDocs } from 'payload'
 
 import { Button, SelectInput, toast, useConfig, useLocale } from '@payloadcms/ui'
-// import Papa from 'papaparse'
+import Papa from 'papaparse'
 import { flattenTopLevelFields } from 'payload'
 import { useMemo, useRef, useState } from 'react'
+import { getCSVColumnNamesAndFlattendedData } from 'src/utils/csv.js'
 
-// import { getCSVColumnNamesAndFlattendedData } from '../../utils/csv.js'
 import { useCollectionContext } from '../../view/ViewWrapper.js'
 import { MultiSelect } from '../multiSelect/index.js'
 import styles from './ExportForm.module.css'
@@ -67,19 +67,19 @@ export function ExportForm() {
 
       const docs = data.docs
 
-      // if (format.value === 'csv') {
-      //   // const flattenedData = filteredData.map((doc) => flatten(doc));
+      if (format.value === 'csv') {
+        // const flattenedData = filteredData.map((doc) => flatten(doc));
 
-      //   const [columns, flattenedData] = getCSVColumnNamesAndFlattendedData(
-      //     docs,
-      //     selectedFields?.map((o) => o.value),
-      //   )
+        const [columns, flattenedData] = getCSVColumnNamesAndFlattendedData(
+          docs,
+          selectedFields?.map((o) => o.value),
+        )
 
-      //   const csv = Papa.unparse(flattenedData, { columns })
-      //   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
-      //   href = URL.createObjectURL(blob)
-      //   download = `Export_${slug}${lang}_${date}.csv`
-      // }
+        const csv = Papa.unparse(flattenedData, { columns })
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+        href = URL.createObjectURL(blob)
+        download = `Export_${slug}${lang}_${date}.csv`
+      }
 
       if (format.value === 'json') {
         const filteredData =
@@ -155,7 +155,7 @@ export function ExportForm() {
   )
 }
 
-function createFlattenedFields(
+export function createFlattenedFields(
   collection: Props['collection'],
 ): { label: string; value: string }[] {
   if (!collection.fields) {

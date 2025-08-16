@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "A plugin for [Payload CMS 3](https://payloadcms.com) to import and export JSON and CSV files.",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
@@ -62,7 +62,6 @@
     "@payloadcms/eslint-config": "3.9.0",
     "@payloadcms/next": "^3.52.0",
     "@payloadcms/richtext-lexical": "^3.52.0",
-    "@payloadcms/ui": "^3.52.0",
     "@playwright/test": "^1.54.2",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.6.0",
@@ -88,9 +87,6 @@
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
-  },
-  "peerDependencies": {
-    "payload": "^3.37.0"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
@@ -132,5 +128,9 @@
   "registry": "https://registry.npmjs.org/",
   "dependencies": {
     "papaparse": "^5.5.3"
+  },
+  "peerDependencies": {
+    "payload": "^3.37.0",
+    "@payloadcms/ui": "^3.37.0"
   }
 }
