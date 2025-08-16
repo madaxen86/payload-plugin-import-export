@@ -44,6 +44,42 @@ const buildConfigWithMemoryDB = async () => {
             type: 'relationship',
             relationTo: 'media',
           },
+          {
+            type: 'tabs',
+            tabs: [
+              {
+                name: 'Tab 1',
+                fields: [
+                  {
+                    name: 'title',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                name: 'Tab 2',
+                fields: [
+                  {
+                    name: 'title',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'group',
+            fields: [
+              {
+                name: 'title',
+                type: 'text',
+              },
+              {
+                name: 'title2',
+                type: 'text',
+              },
+            ],
+          },
         ],
       },
       {
