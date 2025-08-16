@@ -21,9 +21,7 @@ export const useCollectionContext = () => {
   return ctx
 }
 
-export const ViewWrapper: React.FC<{
-  collectionSlug: string
-}> = ({ collectionSlug }) => {
+export function ViewWrapper({ collectionSlug }: { collectionSlug: string }) {
   const { config } = useConfig()
   const user = useAuth()
 

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "rootDir": "./",
+
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,11 +16,25 @@
     "emitDeclarationOnly": true,
     "target": "ES2022",
     "composite": true,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./dev/next-env.d.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./dev/next-env.d.ts"],
+  "exclude": [
+    "dist",
+    "build",
+    "tests",
+    "test",
+    "node_modules",
+    "eslint.config.js",
+    "src/**/*.spec.js",
+    "src/**/*.spec.jsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A plugin for [Payload CMS 3](https://payloadcms.com) to import and export JSON and CSV files.",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
@@ -22,6 +22,11 @@
       "import": "./src/exports/client.ts",
       "types": "./src/exports/client.ts",
       "default": "./src/exports/client.ts"
+    },
+    "./import": {
+      "import": "./src/endpoints/import.ts",
+      "types": "./src/endpoints/import.ts",
+      "default": "./src/endpoints/import.ts"
     }
   },
   "main": "./src/index.ts",
@@ -107,6 +112,11 @@
         "import": "./dist/exports/client.js",
         "types": "./dist/exports/client.d.ts",
         "default": "./dist/exports/client.js"
+      },
+      "./import": {
+        "import": "./dist/endpoints/import.jss",
+        "types": "./dist/endpoints/import.ts",
+        "default": "./dist/endpoints/import.js"
       }
     },
     "main": "./dist/index.js",
