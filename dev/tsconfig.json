@@ -1,35 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "strict": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "jsx": "react",
-    "paths": {
-      "payload/generated-types": [
-        "./src/payload-types.ts"
-      ]
-    }
-  },
+  "extends": "../tsconfig.json",
+  "exclude": [],
   "include": [
-    "src"
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "../src/**/*.ts",
+    "../src/**/*.tsx",
+    "next.config.mjs",
+    ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
-  ],
-  "ts-node": {
-    "transpileOnly": true,
-    "swc": true,
-
-  },
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@payload-config": ["./payload.config.ts"],
+      "payload-plugin-import-export": ["../src/index.ts"],
+      "payload-plugin-import-export/client": ["../src/exports/client.ts"],
+      "payload-plugin-import-export/rsc": ["../src/exports/rsc.ts"]
+    },
+    "noEmit": true,
+    "emitDeclarationOnly": false
+  }
 }

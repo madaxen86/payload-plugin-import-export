@@ -1,4 +1,67 @@
-import { importExportPlugin } from "./plugin";
-export { importExportPlugin };
-export default importExportPlugin;
-export type { PluginTypes } from "./types";
+import type { Config } from 'payload'
+import type { PluginTypes } from 'src/types.js'
+
+import { importEndpointConfig } from './endpoints/import.js'
+
+export const plugin =
+  (pluginOptions: PluginTypes) =>
+  (config: Config): Config => {
+    if (pluginOptions.enabled === false) {
+      return config
+    }
+    if (!config.collections) {
+      config.collections = []
+    }
+
+    if (!config.endpoints) {
+      config.endpoints = []
+    }
+
+    if (!config.admin) {
+      config.admin = {}
+    }
+
+    if (!config.admin.components) {
+      config.admin.components = {}
+    }
+
+    config.collections.forEach((collection) => {
+      if (pluginOptions.excludeCollections?.includes(collection.slug)) {
+        return
+      }
+
+      if (!collection.endpoints) {
+        collection.endpoints = []
+      }
+      collection.endpoints.push({
+        handler: importEndpointConfig,
+        method: 'get',
+        path: '/import',
+      })
+
+      collection.endpoints.push({
+        handler: importEndpointConfig,
+        method: 'patch',
+        path: '/import',
+      })
+
+      if (!collection.admin) {
+        collection.admin = { components: { listMenuItems: [] } }
+      }
+
+      const components = collection.admin.components || {}
+      if (!components.listMenuItems) {
+        components.listMenuItems = []
+      }
+      components.listMenuItems.push({
+        clientProps: {
+          exportCollectionSlug: collection.slug,
+        },
+        path: 'payload-plugin-import-export/client#ViewWrapper',
+      })
+    })
+
+    return config
+  }
+
+export default plugin

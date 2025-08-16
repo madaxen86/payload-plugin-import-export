@@ -5,6 +5,9 @@ You can use this to change data for many records e.g. translate content... from 
 
 All parsing and transformations are done on the client keeping the load from the server.
 
+## Note
+Current version is for Payload CMS 3.
+For Payload 2 please install verion 0 of this plugin.
 
 ## Installation
 
@@ -29,8 +32,6 @@ export const config = buildConfig({
     importExportPlugin({
       enabled: true,
       excludeCollections: ["users"],
-      redirectAfterImport: true,
-      // import User type from your payload-types.ts
       canImport: (user:User) => user.roles.includes("admin")
     }),
   ]
@@ -48,7 +49,8 @@ export const config = buildConfig({
 
 ## How to use
 
-The purpose lies solely on changing already existing records - new records will fail on import and you can download csv or json with the failed items.
+Update data or create new items - and you can download csv or json with the failed items.
+Items fail usually due to permission issues or that required fields are not set.
 
 ### Selecting fields
 On import and export you can select fields.

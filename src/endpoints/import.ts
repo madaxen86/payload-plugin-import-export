@@ -1,34 +1,60 @@
-import type { Endpoint } from "payload/config";
-import type { PayloadRequest } from "payload/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const importEndpointConfig: Endpoint = {
-  method: "patch",
-  path: "/import",
-  async handler(req: PayloadRequest, res) {
-    const slug = req.collection?.config?.slug;
-    const data = req.body;
-    const { payload, user } = req;
-    const locale = req.query?.locale;
+import type { PayloadHandler } from 'payload'
 
-    const results = await Promise.allSettled(
-      data?.map(async (item: Record<string, any>) => {
-        const data = await payload
-          .update({
-            collection: slug,
-            id: item.id,
-            data: item,
-            overrideAccess: false,
-            user,
-            ...(locale && { locale }),
-          })
-          .catch((err: any) => {
-            const data = [...err, { data: item.id }];
-            throw data;
-          });
+export const importEndpointConfig: PayloadHandler = async (req) => {
+  const slug = req.routeParams?.collection as string | undefined
+  if (req.method?.toUpperCase() === 'GET') {
+    return Response.json({ message: 'GET not allowed' })
+  }
+  const data = await req?.json?.()
+  if (!data) {
+    return Response.json({
+      message: 'No data provided',
+      status: 203,
+    })
+  }
+  const { payload, user } = req
+  if (!slug) {
+    throw Error('Must be used in collection')
+  }
+  const locale = req.locale
 
-        return data;
-      }),
-    );
-    res.json(results);
-  },
-};
+  const results = await Promise.allSettled(
+    data?.map(async (item: Record<string, any>) => {
+      const data = await payload
+        .update({
+          id: item.id,
+          collection: slug,
+          data: item,
+          overrideAccess: false,
+          user,
+          ...(locale && { locale }),
+        })
+        .catch(async (err: any) => {
+          //create if update failed
+          const createIfNotExist = !!req?.headers?.get('x-import-if-not-exists') // header('x-import-if-not-exists')
+          if (createIfNotExist === true) {
+            try {
+              const created = await payload.create({
+                collection: slug,
+                data: item,
+                overrideAccess: false,
+                user,
+                ...(locale && { locale }),
+              })
+              return created
+            } catch (err: any) {
+              const data = [...err, { data: item.id }]
+              throw Error(JSON.stringify(data))
+            }
+          }
+          const data = [...err, { data: item.id }]
+          throw Error(JSON.stringify(data))
+        })
+
+      return data
+    }),
+  )
+  return Response.json(results)
+}

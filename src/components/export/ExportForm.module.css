@@ -1,0 +1,18 @@
+.cardContent {
+  display: grid;
+  flex-wrap: wrap;
+  gap: calc(var(--base) * 2);
+  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+  width: 100%;
+}
+.exportButton {
+  height: 4rem;
+  margin-bottom: 6px;
+
+  margin-left: auto;
+  max-width: 15rem;
+  width: 100%;
+}
+.hidden {
+  visibility: hidden;
+}
