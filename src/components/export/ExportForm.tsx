@@ -1,10 +1,10 @@
 'use client'
-/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import type { ClientCollectionConfig, Field, PaginatedDocs } from 'payload'
 
 import { Button, SelectInput, toast, useConfig, useLocale } from '@payloadcms/ui'
 import Papa from 'papaparse'
-import { flattenAllFields } from 'payload'
+import { flattenTopLevelFields } from 'payload'
 import { useMemo, useRef, useState } from 'react'
 
 import { getCSVColumnNamesAndFlattendedData } from '../../utils/csv.js'
@@ -145,10 +145,10 @@ export function ExportForm() {
 
       <a
         aria-hidden="true"
-        aria-label="hiddem download link"
+        aria-label="hidden download link"
         className={styles.hidden}
         hidden
-        href=""
+        href="/#"
         ref={ref}
       />
     </>
@@ -161,7 +161,7 @@ function createFlattenedFields(
   if (!collection.fields) {
     return []
   }
-  return flattenAllFields({ fields: collection.fields as unknown as Field[] }).map((f) => ({
+  return flattenTopLevelFields(collection.fields as unknown as Field[]).map((f) => ({
     label: `${typeof f.label === 'string' ? f.label : f.name}`,
     value: `${f.name}`,
   }))
