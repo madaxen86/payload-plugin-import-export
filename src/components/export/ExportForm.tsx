@@ -3,11 +3,11 @@
 import type { ClientCollectionConfig, Field, PaginatedDocs } from 'payload'
 
 import { Button, SelectInput, toast, useConfig, useLocale } from '@payloadcms/ui'
-import Papa from 'papaparse'
+// import Papa from 'papaparse'
 import { flattenTopLevelFields } from 'payload'
 import { useMemo, useRef, useState } from 'react'
 
-import { getCSVColumnNamesAndFlattendedData } from '../../utils/csv.js'
+// import { getCSVColumnNamesAndFlattendedData } from '../../utils/csv.js'
 import { useCollectionContext } from '../../view/ViewWrapper.js'
 import { MultiSelect } from '../multiSelect/index.js'
 import styles from './ExportForm.module.css'
@@ -58,7 +58,7 @@ export function ExportForm() {
         headers: {
           'Content-type': 'application/json',
         },
-      }).then((res) => res.json())) as PaginatedDocs<Record<string, any>>
+      }).then((res) => res.json())) as PaginatedDocs<Record<string, unknown>>
 
       let href = ''
       let download = ''
@@ -67,19 +67,19 @@ export function ExportForm() {
 
       const docs = data.docs
 
-      if (format.value === 'csv') {
-        // const flattenedData = filteredData.map((doc) => flatten(doc));
+      // if (format.value === 'csv') {
+      //   // const flattenedData = filteredData.map((doc) => flatten(doc));
 
-        const [columns, flattenedData] = getCSVColumnNamesAndFlattendedData(
-          docs,
-          selectedFields?.map((o) => o.value),
-        )
+      //   const [columns, flattenedData] = getCSVColumnNamesAndFlattendedData(
+      //     docs,
+      //     selectedFields?.map((o) => o.value),
+      //   )
 
-        const csv = Papa.unparse(flattenedData, { columns })
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
-        href = URL.createObjectURL(blob)
-        download = `Export_${slug}${lang}_${date}.csv`
-      }
+      //   const csv = Papa.unparse(flattenedData, { columns })
+      //   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+      //   href = URL.createObjectURL(blob)
+      //   download = `Export_${slug}${lang}_${date}.csv`
+      // }
 
       if (format.value === 'json') {
         const filteredData =
@@ -161,7 +161,7 @@ function createFlattenedFields(
   if (!collection.fields) {
     return []
   }
-  return flattenTopLevelFields(collection.fields as unknown as Field[]).map((f) => ({
+  return flattenTopLevelFields(collection.fields).map((f) => ({
     label: `${typeof f.label === 'string' ? f.label : f.name}`,
     value: `${f.name}`,
   }))
