@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import type { ClientCollectionConfig, Field, PaginatedDocs } from 'payload'
 
 import { Button, SelectInput, toast, useConfig, useLocale } from '@payloadcms/ui'
@@ -135,14 +135,6 @@ export function ExportForm() {
               setSelected={setSelectedFields}
               title="Fields"
             />
-            {/* <MultiSelect
-              name="fields"
-              onChange={setSelectedFields}
-              options={fields}
-              selected={selectedFields}
-              title="Fields"
-              value={selectedFields.map((o) => o.value)}
-            /> */}
           </div>
 
           <Button className={styles.exportButton} onClick={handleExport}>
