@@ -163,14 +163,9 @@ export const MultiSelect = ({
     }
     return [selectAllOption, ...options]
   }
-  const getValue = () => (isSelectAllSelected() ? [selectAllOption] : selected)
 
   const handleSelect = (newValues: Option[]) => {
-    console.log('newValues', newValues)
-
     if (newValues?.some(({ value }) => value === '*')) {
-      console.log('******')
-
       return setSelected(options)
     }
     setSelected(newValues || [])
@@ -178,7 +173,7 @@ export const MultiSelect = ({
 
   useEffect(() => {
     initialAction?.()
-  }, [])
+  }, [initialAction])
 
   return (
     <ReactSelect

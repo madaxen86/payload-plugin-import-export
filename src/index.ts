@@ -65,7 +65,6 @@ export const plugin =
         },
         path: 'payload-plugin-import-export/client#ViewWrapper',
       })
-      console.log('added component', 'payload-plugin-import-export/client#ViewWrapper')
     })
 
     return config
