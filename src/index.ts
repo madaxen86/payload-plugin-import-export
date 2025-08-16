@@ -47,19 +47,25 @@ export const plugin =
       })
 
       if (!collection.admin) {
-        collection.admin = { components: { listMenuItems: [] } }
+        collection.admin = {}
+      }
+      if (!collection.admin.components) {
+        collection.admin = { components: {} }
+      }
+      if (!collection.admin.components!.listMenuItems) {
+        collection.admin.components!.listMenuItems = []
       }
 
-      const components = collection.admin.components || {}
-      if (!components.listMenuItems) {
-        components.listMenuItems = []
+      if (!collection.admin.components) {
+        collection.admin.components!.listMenuItems = []
       }
-      components.listMenuItems.push({
+      collection.admin?.components?.listMenuItems?.push({
         clientProps: {
           exportCollectionSlug: collection.slug,
         },
         path: 'payload-plugin-import-export/client#ViewWrapper',
       })
+      console.log('added component', 'payload-plugin-import-export/client#ViewWrapper')
     })
 
     return config
