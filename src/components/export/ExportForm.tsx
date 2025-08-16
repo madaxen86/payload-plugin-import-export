@@ -2,7 +2,7 @@
 
 import type { ClientCollectionConfig } from 'payload'
 
-import { flattenTopLevelFields } from 'payload'
+// import { flattenTopLevelFields } from 'payload'
 
 type Props = {
   collection: ClientCollectionConfig
@@ -149,14 +149,14 @@ export function ExportForm() {
   // )
 }
 
-export function createFlattenedFields(
-  collection: Props['collection'],
-): { label: string; value: string }[] {
-  if (!collection.fields) {
-    return []
-  }
-  return flattenTopLevelFields(collection.fields).map((f) => ({
-    label: `${typeof f.label === 'string' ? f.label : f.name}`,
-    value: `${f.name}`,
-  }))
-}
+// export function createFlattenedFields(
+//   collection: Props['collection'],
+// ): { label: string; value: string }[] {
+//   if (!collection.fields) {
+//     return []
+//   }
+//   return flattenTopLevelFields(collection.fields).map((f) => ({
+//     label: `${typeof f.label === 'string' ? f.label : f.name}`,
+//     value: `${f.name}`,
+//   }))
+// }
