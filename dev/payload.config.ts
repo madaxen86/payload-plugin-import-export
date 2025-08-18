@@ -84,6 +84,9 @@ const buildConfigWithMemoryDB = async () => {
       },
       {
         slug: 'media',
+        admin: {
+          useAsTitle: 'title',
+        },
         fields: [
           {
             name: 'title',

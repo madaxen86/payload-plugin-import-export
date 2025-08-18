@@ -31,7 +31,7 @@ export const plugin =
         return
       }
 
-      if (!collection.endpoints) {
+      if (!collection.endpoints && !Array.isArray(collection.endpoints)) {
         collection.endpoints = []
       }
 
@@ -49,16 +49,17 @@ export const plugin =
       if (!collection.admin) {
         collection.admin = {}
       }
-      if (!collection.admin.components) {
-        collection.admin = { components: {} }
-      }
-      if (!collection.admin.components!.listMenuItems) {
-        collection.admin.components!.listMenuItems = []
-      }
 
       if (!collection.admin.components) {
-        collection.admin.components!.listMenuItems = []
+        collection.admin.components = {}
       }
+      if (
+        !collection.admin.components.listMenuItems &&
+        !Array.isArray(collection.admin.components.listMenuItems)
+      ) {
+        collection.admin.components.listMenuItems = []
+      }
+
       collection.admin?.components?.listMenuItems?.push({
         clientProps: {
           exportCollectionSlug: collection.slug,

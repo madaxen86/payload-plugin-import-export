@@ -18,8 +18,7 @@
     "paths": {
       "@payload-config": ["./payload.config.ts"],
       "payload-plugin-import-export": ["../src/index.ts"],
-      "payload-plugin-import-export/client": ["../src/exports/client.ts"],
-      "payload-plugin-import-export/rsc": ["../src/exports/rsc.ts"]
+      "payload-plugin-import-export/client": ["../src/exports/client.ts"]
     },
     "noEmit": true,
     "emitDeclarationOnly": false
