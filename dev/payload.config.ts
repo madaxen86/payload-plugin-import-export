@@ -98,6 +98,7 @@ const buildConfigWithMemoryDB = async () => {
         // },
       },
     ],
+    cookiePrefix: 'pl-imp-exo',
     db: mongooseAdapter({
       ensureIndexes: true,
       url: process.env.DATABASE_URI || '',

@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "description": "A plugin for [Payload CMS 3](https://payloadcms.com) to import and export JSON and CSV files.",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",
@@ -56,22 +56,22 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@payloadcms/db-mongodb": "^3.52.0",
-    "@payloadcms/db-postgres": "^3.52.0",
-    "@payloadcms/db-sqlite": "^3.52.0",
+    "@payloadcms/db-mongodb": "^3.55.1",
+    "@payloadcms/db-postgres": "^3.55.1",
+    "@payloadcms/db-sqlite": "^3.55.1",
     "@payloadcms/eslint-config": "3.9.0",
-    "@payloadcms/next": "^3.52.0",
-    "@payloadcms/richtext-lexical": "^3.52.0",
-    "@playwright/test": "^1.54.2",
+    "@payloadcms/next": "^3.55.1",
+    "@payloadcms/richtext-lexical": "^3.55.1",
+    "@playwright/test": "^1.55.0",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.6.0",
-    "@types/node": "^22.17.2",
+    "@types/node": "^22.18.4",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "copyfiles": "2.4.1",
     "cross-env": "^7.0.3",
-    "eslint": "^9.33.0",
+    "eslint": "^9.35.0",
     "eslint-config-next": "15.4.4",
     "graphql": "^16.11.0",
     "mongodb-memory-server": "10.1.4",
@@ -130,7 +130,7 @@
     "papaparse": "^5.5.3"
   },
   "peerDependencies": {
-    "payload": "^3.37.0",
-    "@payloadcms/ui": "^3.37.0"
+    "@payloadcms/ui": "^3.37.0",
+    "payload": "^3.37.0"
   }
 }

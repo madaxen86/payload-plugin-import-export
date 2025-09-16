@@ -12,7 +12,12 @@
   margin-left: auto;
   max-width: 15rem;
   width: 100%;
+  isolation: unset;
 }
 .hidden {
   visibility: hidden;
+}
+/* override global searchbar isolation style because it would make listItems unclickable */
+:global(.search-bar) {
+  isolation: unset;
 }

@@ -209,8 +209,6 @@ export const ImportForm = ({ onFinish }: { onFinish?: () => void }) => {
               setCreateIfNotExist((prev) => !prev)
             }}
           />
-          {/* </section>
-        <section> */}
           <CheckboxInput
             checked={keepIds}
             inputRef={inputRef2}
