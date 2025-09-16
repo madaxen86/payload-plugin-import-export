@@ -17,7 +17,3 @@
 .hidden {
   visibility: hidden;
 }
-/* override global searchbar isolation style because it would make listItems unclickable */
-:global(.search-bar) {
-  isolation: unset;
-}
