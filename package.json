@@ -1,6 +1,6 @@
 {
   "name": "payload-plugin-import-export",
-  "version": "3.0.14",
+  "version": "3.0.15",
   "description": "A plugin for [Payload CMS 3](https://payloadcms.com) to import and export JSON and CSV files.",
   "homepage:": "https://github.com/madaxen86/payload-plugin-import.git",
   "repository": "https://github.com/madaxen86/payload-plugin-import.git",

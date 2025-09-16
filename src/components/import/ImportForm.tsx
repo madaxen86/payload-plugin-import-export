@@ -32,7 +32,9 @@ export const ImportForm = ({ onFinish }: { onFinish?: () => void }) => {
   const [data, setData] = useState<Data>([])
   const [fields, setFields] = useState([''])
   const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef2 = useRef<HTMLInputElement>(null)
   const [createIfNotExist, setCreateIfNotExist] = useState(false)
+  const [keepIds, setKeepIds] = useState(false)
   const [selectedFields, _setSelectedFields] = useState([{ label: 'id', value: 'id' }])
   const setSelectedFields: typeof _setSelectedFields = (newVal) => {
     if (newVal === null || newVal.length === 0) {
@@ -123,7 +125,8 @@ export const ImportForm = ({ onFinish }: { onFinish?: () => void }) => {
           credentials: 'include',
           headers: {
             'Content-type': 'application/json',
-            ...(createIfNotExist && { 'x-import-if-not-exists': 'true' }), // "x-import-if-not-exists": createIfNotExist ? "true" : "false",
+            ...(createIfNotExist && { 'x-import-if-not-exists': 'true' }),
+            ...(createIfNotExist && keepIds && { 'x-import-keep-ids': 'true' }),
           },
           method: 'PATCH',
         },
@@ -205,6 +208,25 @@ export const ImportForm = ({ onFinish }: { onFinish?: () => void }) => {
             onToggle={() => {
               setCreateIfNotExist((prev) => !prev)
             }}
+          />
+          {/* </section>
+        <section> */}
+          <CheckboxInput
+            checked={keepIds}
+            inputRef={inputRef2}
+            Label={
+              <button
+                className={styles.checkboxlabel}
+                onClick={() => inputRef2.current?.click()}
+                type="button"
+              >
+                KeepIds
+              </button>
+            }
+            onToggle={() => {
+              setKeepIds((prev) => !prev)
+            }}
+            readOnly={!createIfNotExist}
           />
         </section>
         <div className={styles.btnGroup}>

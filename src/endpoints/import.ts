@@ -33,7 +33,8 @@ export const importEndpointConfig: PayloadHandler = async (req) => {
         })
         .catch(async (err: any) => {
           //create if update failed
-          const createIfNotExist = !!req?.headers?.get('x-import-if-not-exists') // header('x-import-if-not-exists')
+          const createIfNotExist = !!req?.headers?.get('x-import-if-not-exists')
+          const keepIds = !!req?.headers?.get('x-import-keep-ids')
           if (createIfNotExist === true) {
             try {
               const created = await payload.create({
@@ -42,6 +43,10 @@ export const importEndpointConfig: PayloadHandler = async (req) => {
                 overrideAccess: false,
                 user,
                 ...(locale && { locale }),
+                context: {
+                  id: item.id,
+                  keepId: keepIds,
+                },
               })
               return created
             } catch (err: any) {

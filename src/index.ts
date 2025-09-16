@@ -46,6 +46,31 @@ export const plugin =
         path: '/import',
       })
 
+      if (!collection.hooks) {
+        collection.hooks = {}
+      }
+      if (!collection.hooks.beforeValidate && !Array.isArray(collection.hooks.beforeValidate)) {
+        collection.hooks.beforeValidate = []
+      }
+
+      collection.hooks.beforeValidate.push(async ({ context, data, operation, req }) => {
+        if (operation !== 'create' || context?.keepId !== true || !context?.id) {
+          return data
+        }
+        const idExists = await req.payload.count({
+          collection: collection.slug,
+          where: {
+            id: context.id,
+          },
+        })
+        if (idExists.totalDocs > 0) {
+          return data
+        }
+        return {
+          ...data,
+          id: context.id,
+        }
+      })
       if (!collection.admin) {
         collection.admin = {}
       }
