@@ -97,6 +97,15 @@ const buildConfigWithMemoryDB = async () => {
         //   staticDir: path.resolve(dirname, 'media'),
         // },
       },
+      {
+        slug: 'products',
+        fields: [
+          {
+            name: 'title',
+            type: 'text',
+          },
+        ],
+      },
     ],
     cookiePrefix: 'pl-imp-exo',
     db: mongooseAdapter({
