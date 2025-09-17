@@ -53,30 +53,28 @@ export const plugin =
         collection.hooks.beforeValidate = []
       }
 
-      collection.hooks.beforeValidate.push(
-        async ({ collection: col, context, data, operation, req }) => {
-          const idType = col.flattenedFields.find((f) => f.name === 'id')!.type
-          const id = idType === 'number' ? Number(context.id) : context.id
+      collection.hooks.beforeValidate.push(async ({ context, data, operation, req }) => {
+        if (operation !== 'create' || context?.keepId !== true || !context?.id) {
+          return data
+        }
 
-          if (operation !== 'create' || context?.keepId !== true || !id) {
-            return data
-          }
-          const idExists = await req.payload.count({
-            collection: collection.slug,
-            where: {
-              id,
-            },
-          })
-          if (idExists.totalDocs > 0) {
-            return data
-          }
+        const id = !Number.isNaN(context.id) ? Number(context.id) : context.id
 
-          return {
-            ...data,
+        const idExists = await req.payload.count({
+          collection: collection.slug,
+          where: {
             id,
-          }
-        },
-      )
+          },
+        })
+        if (idExists.totalDocs > 0) {
+          return data
+        }
+
+        return {
+          ...data,
+          id,
+        }
+      })
       if (!collection.admin) {
         collection.admin = {}
       }
