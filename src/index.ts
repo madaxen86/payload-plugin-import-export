@@ -58,7 +58,7 @@ export const plugin =
           return data
         }
 
-        const id = !Number.isNaN(context.id) ? Number(context.id) : context.id
+        const id = context.id
 
         const idExists = await req.payload.count({
           collection: collection.slug,
